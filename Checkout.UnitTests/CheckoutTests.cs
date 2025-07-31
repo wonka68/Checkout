@@ -15,7 +15,8 @@ public class CheckoutTests
     {
         var testRules = new List<PriceRule>
         {
-            new PriceRule ("Product", 100)
+            new PriceRule ("A", 50),
+            new PriceRule ("B", 30)
         };
         return new CheckoutProcessor(testRules);
     }
@@ -40,7 +41,22 @@ public class CheckoutTests
         var checkout = CreateCheckoutWithOneRule();
 
         // Act
-        checkout.Scan("Product");
+        checkout.Scan("A");
+        var result = checkout.GetTotalPrice();
+
+        // Assert
+        Assert.That(result, Is.EqualTo(50));
+    }
+
+    [Test]
+    public void CanScanTwoItemsAndReturnCorrectPrice()
+    {
+        // Arrange
+        var checkout = CreateCheckoutWithOneRule();
+
+        // Act
+        checkout.Scan("A");
+        checkout.Scan("A");
         var result = checkout.GetTotalPrice();
 
         // Assert
