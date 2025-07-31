@@ -1,3 +1,6 @@
+using Checkout.Service.Interfaces;
+using Checkout.Service.Services;
+
 namespace Checkout.UnitTests;
 
 public class CheckoutTests
@@ -5,6 +8,11 @@ public class CheckoutTests
     [SetUp]
     public void Setup()
     {
+    }
+
+    private ICheckout CreateCheckoutWithDefaultRules()
+    {
+        return new CheckoutProcessor();
     }
 
     [Test]
