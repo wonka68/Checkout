@@ -1,6 +1,6 @@
 namespace Checkout.UnitTests;
 
-public class Tests
+public class CheckoutTests
 {
     [SetUp]
     public void Setup()
@@ -8,8 +8,15 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
+    public void CanScanAnItem()
     {
+        // Arrange
+        var checkout = CreateCheckoutWithDefaultRules();
+
+        // Act
+        checkout.Scan("Product");
+
+        // Assert
         Assert.Pass();
     }
 }
