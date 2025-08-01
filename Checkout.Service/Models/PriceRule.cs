@@ -7,11 +7,11 @@ public class PriceRule
     public int? SpecialPrice { get; set; }
     public int? DiscountedQuantity { get; set; }
 
-    public PriceRule(string sku, int unitPrice, int? specialPrice = null, int? discountedQuantity = null)
+    public PriceRule(string sku, int unitPrice, int? discountedQuantity = null, int? specialPrice = null)
     {
         SKU = sku;
         UnitPrice = unitPrice;
-        SpecialPrice = specialPrice;
         DiscountedQuantity = discountedQuantity;
+        SpecialPrice = specialPrice;
     }
 }

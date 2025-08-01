@@ -1,7 +1,3 @@
-using Checkout.Service.Interfaces;
-using Checkout.Service.Models;
-using Checkout.Service.Services;
-
 namespace Checkout.UnitTests;
 
 public class CheckoutTests
@@ -11,24 +7,14 @@ public class CheckoutTests
     {
     }
 
-    private ICheckout CreateCheckoutWithOneRule()
-    {
-        var testRules = new List<PriceRule>
-        {
-            new PriceRule ("A", 50),
-            new PriceRule ("B", 30)
-        };
-        return new CheckoutProcessor(testRules);
-    }
-
     [Test]
     public void CanScanAnItemWithoutException()
     {
         // Arrange
-        var checkout = CreateCheckoutWithOneRule();
+        var checkout = TestHelpers.CreateCheckoutWithOneRule();
 
         // Act
-        checkout.Scan("Product");
+        checkout.Scan("A");
 
         // Assert
         Assert.Pass();
@@ -38,7 +24,7 @@ public class CheckoutTests
     public void CanScanAnItemAndReturnCorrectPrice()
     {
         // Arrange
-        var checkout = CreateCheckoutWithOneRule();
+        var checkout = TestHelpers.CreateCheckoutWithOneRule();
 
         // Act
         checkout.Scan("A");
@@ -52,7 +38,7 @@ public class CheckoutTests
     public void CanScanTwoItemsAndReturnCorrectPrice()
     {
         // Arrange
-        var checkout = CreateCheckoutWithOneRule();
+        var checkout = TestHelpers.CreateCheckoutWithTwoRules();
 
         // Act
         checkout.Scan("A");
@@ -61,5 +47,21 @@ public class CheckoutTests
 
         // Assert
         Assert.That(result, Is.EqualTo(100));
+    }
+
+    [Test]
+    public void CanScanThreeItemsTriggersSpecialPrice()
+    {
+        // Arrange
+        var checkout = TestHelpers.CreateCheckoutWithRulesAndSpecialPrices();
+
+        // Act
+        checkout.Scan("A");
+        checkout.Scan("A");
+        checkout.Scan("A");
+        var result = checkout.GetTotalPrice();
+
+        // Assert
+        Assert.That(result, Is.EqualTo(130));
     }
 }

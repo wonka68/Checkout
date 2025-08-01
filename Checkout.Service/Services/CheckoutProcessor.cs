@@ -23,7 +23,16 @@ public class CheckoutProcessor : ICheckout
             int quantity = product.Value;
             var rule = _priceRules[sku];
 
-            total += quantity * rule.UnitPrice;
+            if (rule.DiscountedQuantity.HasValue && rule.SpecialPrice.HasValue)
+            {
+                int specialSets = quantity / rule.DiscountedQuantity.Value;
+                int remaining = quantity % rule.DiscountedQuantity.Value;
+                total += specialSets * rule.SpecialPrice.Value + remaining * rule.UnitPrice;
+            }
+            else
+            {
+                total += quantity * rule.UnitPrice;
+            }
         }
 
         return total;
