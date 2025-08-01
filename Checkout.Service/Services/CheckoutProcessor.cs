@@ -40,9 +40,17 @@ public class CheckoutProcessor : ICheckout
 
     public void Scan(string item)
     {
+        if (!IsValidItem(item))
+            throw new ArgumentException($"Item '{item}' is not valid.");
+
         if (_scannedItems.ContainsKey(item))
             _scannedItems[item]++;
         else
             _scannedItems[item] = 1;
+    }
+
+    protected bool IsValidItem(string item)
+    {
+        return _priceRules.ContainsKey(item);
     }
 }
